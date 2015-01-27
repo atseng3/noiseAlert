@@ -7,6 +7,8 @@ NoiseAlert.Collections = NoiseAlert.Collections || {};
 
     NoiseAlert.Collections.Decibels = Backbone.Collection.extend({
 
+    		highPoints: [],
+
         model: NoiseAlert.Models.Decibels
 
     });
