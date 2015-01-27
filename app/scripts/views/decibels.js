@@ -17,7 +17,14 @@ NoiseAlert.Views = NoiseAlert.Views || {};
 
         className: '',
 
-        events: {},
+        events: {
+            'submit form': 'submitForm'
+        },
+
+        submitForm: function(event) {
+            event.preventDefault();
+            
+        },
 
         initialize: function () {
             // this.listenTo(this.model, 'change', this.render);
