@@ -6,13 +6,17 @@
         <title>NoiseAlert</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="d3/d3.v3.js"></script>
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
         <!-- build:js scripts/vendor/modernizr.js -->
         <script src="bower_components/modernizr/modernizr.js"></script>
+
         <!-- endbuild -->
+        <style type="text/css">
+        </style>
     </head>
     <body>
         <nav class="navbar navbar-default">
@@ -25,11 +29,10 @@
           </div>
         </nav>
         <div class="container-fluid" style="width:80%;">
-            <form>
-                <input type="text" name="phone" tabindex="1" placeholder="Send to Cell Phone Number">
-                <input type="text" name="threshold" tabindex="2" placeholder="Set Threshold">
-            </form>
+            <div id="visualizer"></div>
+            <div id="decibels-user-input"></div>
         </div>
+
 
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -79,6 +82,7 @@ var payload = {
 };
 
 var highPoints = [];
+var dataset = [];
 
 
 var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
@@ -223,8 +227,8 @@ function successCallback(stream) {
         }
         highPoints.sort();
         
-        console.log(highPoints);
-        // debugger
+        // console.log(highPoints);
+
         // payload.text = soundMeter.instant.toFixed(2);
         // doCORSRequest({
         //     method: 'POST',
@@ -248,8 +252,40 @@ function errorCallback(error) {
   console.log('navigator.getUserMedia error: ', error);
 }
 
+
+
+var dataset = [ 25, 7, 5, 26, 11, 8, 25, 14, 23, 19,
+                14, 11, 22, 29, 11, 13, 12, 17, 18, 10,
+                24, 18, 25, 9, 3 ];
+var h = 200;
+var w = 1000;
+var barPadding = 1;
+var svg = d3.select('#visualizer')
+                      .append('svg')
+                      .attr('width', w)
+                      .attr('height', h);
+var rects = svg.selectAll('rect')
+             .data(dataset)
+             .enter()
+             .append('rect')
+             .attr('x', function(d, i) {
+                return i * (w / dataset.length);
+             })
+             .attr('y', function(d) {
+                return h - (d * 4);
+             })
+             .attr('width', w / dataset.length - barPadding)
+             .attr('height', function(d) {
+                return d * 10;
+             })
+             .attr('fill', function(d) {
+                return 'rgb(0, 0, ' + (d * 10) + ')';
+             });
 navigator.getUserMedia(constraints, successCallback, errorCallback);
         </script>
+        <script src="scripts/views/decibels.js"></script>
+        <script src="scripts/collections/decibels.js"></script>
+        <script src="scripts/models/decibel.js"></script>
         <!-- endbuild -->
 </body>
 </html>

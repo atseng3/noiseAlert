@@ -8,7 +8,10 @@ window.NoiseAlert = {
     Routers: {},
     init: function () {
         'use strict';
-        console.log('Hello from Backbone!');
+
+        new NoiseAlert.Views.Decibels({
+            collection: new NoiseAlert.Collections.Decibels()
+        });
     }
 };
 
